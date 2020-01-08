@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t elidion/comlex-react-test -f ./client/Dockerfile.dev ./clinet
+
+script:
+  - docker run elidion/complex-react-test npm start test -- --coverage
+
+after_success:
+  - docker build -t elidion/complex-client ./client
+  - docker build -t elidion/complex-nginx ./nginx
+  - docker build -t elidion/complex-server ./server
+  - docker build -t elidion/complex-worker ./worker 
+  
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  - docker push elidion/complex-client
+  - docker push elidion/complex-nginx
+  - docker push elidion/complex-server
+  - docker push elidion/complex-worker
