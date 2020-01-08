@@ -6,7 +6,7 @@ before_install:
   - docker build -t elidion/comlex-react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run elidion/complex-react-test npm start test -- --coverage
+  - docker run elidion/complex-react-test npm test -- --coverage
 
 after_success:
   - docker build -t elidion/complex-client ./client
